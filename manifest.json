@@ -16,5 +16,15 @@
         "main.js"
       ]
     }
-  ]
+  ],
+  "options_ui": {
+    "page": "options.html"
+  },
+
+  "permissions": ["storage"],
+  "applications": {
+    "gecko": {
+      "id": "addon@example.com"
+    }
+  }
 }
