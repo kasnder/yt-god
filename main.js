@@ -8,15 +8,16 @@ function monitorNavigated() {
     if (!newVid || vid === newVid) return;
 
     // Find biased results
-    if (!items)
+    if (!items) {
         items = document.querySelector("#related #items");
+        items.insertAdjacentHTML('beforebegin', '<div id="upnext" class="style-scope ytd-compact-autoplay-renderer" style="padding-bottom:12px;">Filtered Recommandations</div> <button id="updatebutton">Update </button>');
+        
+        // button because it does not always work
+        document.querySelector('#updatebutton').addEventListener("click", main);
+    }
+
     // Assure, we have video suggestions
     if (newVid && !items) return;
-
-    items.insertAdjacentHTML('beforebegin', '<div id="upnext" class="style-scope ytd-compact-autoplay-renderer" style="padding-bottom:12px;">Filtered Recommandations</div> <button id="updatebutton">Update </button>');
-
-    // button because it does not always work
-    document.querySelector('#updatebutton').addEventListener("click", main);
 
     main();
     // create an observer to detect HTML change in recommanded videos
@@ -32,6 +33,7 @@ function monitorNavigated() {
 }
 
 document.addEventListener('yt-page-data-updated', monitorNavigated);
+document.addEventListener('yt-next-continuation-data-updated', monitorNavigated);
 
 monitorNavigated();
 
