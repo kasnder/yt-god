@@ -1,23 +1,26 @@
 function saveOptions(e) {
-  e.preventDefault();
-  browser.storage.sync.set({
-    hide: document.querySelector("#hide").checked
-  });
-  document.querySelector("#saved").innerText = "saved";
+    e.preventDefault();
+    chrome.storage.sync.set({
+        hide: document.querySelector("#hide").checked,
+        sort: document.querySelector("#sort").checked,
+        long: document.querySelector("#long").checked
+    });
+    document.querySelector("#saved").innerText = "saved";
 }
 
 function restoreOptions() {
+    function setCurrentChoice(result) {
+        document.querySelector("#hide").checked =
+            (result.hide === undefined) ? true : result.hide;
 
-  function setCurrentChoice(result) {
-    document.querySelector("#hide").checked = result.hide || true;
-  }
+        document.querySelector("#sort").checked =
+            (result.sort === undefined) ? false : result.sort;
 
-  function onError(error) {
-    console.log(`Error: ${error}`);
-  }
+        document.querySelector("#long").checked =
+            (result.long === undefined) ? true : result.long;
+    }
 
-  var getting = browser.storage.sync.get("hide");
-  getting.then(setCurrentChoice, onError);
+    chrome.storage.sync.get(['hide', 'sort', 'long'], setCurrentChoice);
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
